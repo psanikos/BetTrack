@@ -2,8 +2,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -41,14 +41,15 @@ dependencies {
     implementation(project(":domain"))
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hiltCompiler)
+    ksp(libs.hiltAndroidCompiler)
 
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.moshi)
     implementation(libs.okhttp)
     implementation(libs.moshi.kotlin)
-    
+
     //Timber
     implementation(libs.timber)
 
@@ -58,8 +59,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
-}
-
-kapt {
-    correctErrorTypes = true
 }
