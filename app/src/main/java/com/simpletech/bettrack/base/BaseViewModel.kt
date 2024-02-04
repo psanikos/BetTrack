@@ -1,11 +1,14 @@
 package com.simpletech.bettrack.base
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<S : UiState, E : UiEvent>(
+abstract class BaseViewModel<S : UiState, E : UiEvent, F : UiEffect>(
     initialState: S,
 ) : ViewModel() {
 
@@ -14,16 +17,22 @@ abstract class BaseViewModel<S : UiState, E : UiEvent>(
     val currentState: S
         get() = state.value
 
-    val hasError = AtomicBoolean(false)
+    private val effect: MutableSharedFlow<F> = MutableSharedFlow()
+    fun effect(): SharedFlow<F> = effect
 
-    protected open suspend fun onEvent(event: E) {}
+    fun onEvent(event: E) = viewModelScope.launch {
+        handleEvent(event)
+    }
+
+    protected open fun handleEvent(event: E) {}
 
     protected fun setState(reduce: S.() -> S) {
         val newState = currentState.reduce()
         state.value = newState
     }
 
-    fun toggleError() {
-        hasError.compareAndSet(false, true)
+    protected fun setEffect(builder: () -> F) {
+        val effectValue = builder()
+        viewModelScope.launch { effect.emit(effectValue) }
     }
 }

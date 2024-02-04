@@ -28,7 +28,7 @@ fun List<EventDto>.toDomainModel(): List<EventDomainModel> {
         .map {
             EventDomainModel(
                 id = it.eventId.orEmpty(),
-                name = it.eventName.orEmpty(),
+                teams = it.eventName.orEmpty(),
                 category = SportCategory.fromCode(it.sportCategory!!),
                 startTime = it.startTime?.let { seconds -> seconds.epochSecondsToDate() }
             )

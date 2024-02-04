@@ -15,7 +15,10 @@ data class SportEventsDomainModel(
 
 data class EventDomainModel(
     val id: String,
-    val name: String,
+    val teams: String,
     val category: SportCategory,
     val startTime: Date?
-)
+) {
+    val teamList: List<String>
+        get() = teams.split("-")
+}

@@ -1,27 +1,31 @@
 package com.simpletech.bettrack.feature.home
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.simpletech.bettrack.R
-import com.simpletech.bettrack.ui.theme.BetTrackTheme
+import com.simpletech.bettrack.extensions.showToast
+import com.simpletech.bettrack.feature.home.category_card.CategoryCard
+import com.simpletech.bettrack.feature.home.components.AppBar
+import com.simpletech.bettrack.feature.home.components.LoadingIndicator
+import com.simpletech.domain.models.SportEventsDomainModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,11 +33,38 @@ import com.simpletech.bettrack.ui.theme.BetTrackTheme
 fun HomeScreen() {
     val viewModel: HomeScreenViewModel = hiltViewModel()
     val state by viewModel.state().collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
     val count by remember(state.data) {
         derivedStateOf {
             state.data?.sports?.size ?: 0
         }
     }
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.effect()
+            .distinctUntilChanged()
+            .collectLatest {
+                when (it) {
+                    is HomeScreenContract.HomeEffect.OnError -> {
+                        context.showToast(it.message)
+                    }
+
+                    else -> {}
+                }
+            }
+    })
+    Content(
+        isLoading = state.isLoading,
+        data = state.data?.sports.orEmpty()
+    )
+}
+
+
+@Composable
+private fun Content(
+    isLoading: Boolean,
+    data: List<SportEventsDomainModel>
+) {
     Scaffold(
         topBar = {
             AppBar()
@@ -46,31 +77,19 @@ fun HomeScreen() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Count: $count")
+            Crossfade(targetState = isLoading, label = "") { loading ->
+                when (loading) {
+                    true -> LoadingIndicator()
+                    else -> LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        items(data) { item ->
+                            CategoryCard(data = item)
+                        }
+                    }
+                }
+            }
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AppBar() {
-    MediumTopAppBar(
-        title = {
-            Text(
-                text = stringResource(id = R.string.app_name)
-            )
-        },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = Color.White
-        )
-    )
-}
-
-@Preview
-@Composable
-fun AppBarPreview() {
-    BetTrackTheme {
-        AppBar()
     }
 }

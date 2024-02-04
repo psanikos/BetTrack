@@ -13,7 +13,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val fetchSportEventsUseCase: FetchSportEventsUseCase
-) : BaseViewModel<HomeScreenContract.HomeState, HomeScreenContract.HomeEvent>(HomeScreenContract.HomeState()) {
+) : BaseViewModel<HomeScreenContract.HomeState, HomeScreenContract.HomeEvent, HomeScreenContract.HomeEffect>(
+    HomeScreenContract.HomeState()
+) {
 
     init {
         fetchEvents()
@@ -21,18 +23,21 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun fetchEvents() {
         viewModelScope.launch(Dispatchers.IO) {
+            setState { copy(isLoading = true) }
             when (val response = fetchSportEventsUseCase()) {
                 is ApiResponse.Success -> {
                     Timber.tag(TAG).i("Got data! Count: ${response.data.sports.size}")
                     setState {
                         copy(
-                            data = response.data
+                            data = response.data,
+                            isLoading = false
                         )
                     }
                 }
 
                 is ApiResponse.Failure -> {
                     Timber.tag(TAG).e("Error!: ${response.error.message}")
+                    setState { copy(isLoading = false) }
                     showError(response.error)
                 }
             }
@@ -40,12 +45,9 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     private fun showError(exception: Exception) {
-        setState {
-            copy(
-                errorMessage = exception.message ?: "Something went wrong"
-            )
+        setEffect {
+            HomeScreenContract.HomeEffect.OnError(exception.message ?: "Something went wrong")
         }
-        toggleError()
     }
 
 
