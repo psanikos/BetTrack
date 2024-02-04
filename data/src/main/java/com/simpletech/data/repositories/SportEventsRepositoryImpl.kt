@@ -6,6 +6,7 @@ import com.simpletech.data.mappers.toDomainModel
 import com.simpletech.domain.models.SportsEventsDomainModel
 import com.simpletech.domain.repositories.SportEventsRepository
 import com.simpletech.domain.utils.ApiResponse
+import timber.log.Timber
 import javax.inject.Inject
 
 class SportEventsRepositoryImpl @Inject constructor(
@@ -19,9 +20,13 @@ class SportEventsRepositoryImpl @Inject constructor(
                 else ApiResponse.Failure(ApiException.EmptyBodyException)
             }
         } catch (e: Exception) {
+            Timber.tag(TAG).e(e.message ?: "Error fetching data")
             ApiResponse.Failure(e)
         }
     }
 
+    companion object {
+        const val TAG = "EVENTS_REPO"
+    }
 }
 

@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -23,6 +24,7 @@ class NetworkModule {
             .build()
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .client(OkHttpClient())
             .baseUrl(Constants.BASE_URL)
             .build()
             .create(SportsApi::class.java)

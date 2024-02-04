@@ -58,8 +58,10 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
     ksp(libs.hiltCompiler)
     ksp(libs.hiltAndroidCompiler)
+    ksp(libs.daggerCompiler)
 
     //Timber
     implementation(libs.timber)
@@ -67,6 +69,7 @@ dependencies {
     //Lifecycle
     implementation(libs.lifecycle.viewmodel)
 
+    implementation(libs.lifecycle.compose)
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
