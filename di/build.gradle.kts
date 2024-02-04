@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.moshi)
     implementation(libs.okhttp)
+    implementation(libs.moshi.kotlin)
+    
     //Timber
     implementation(libs.timber)
 

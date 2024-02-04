@@ -17,6 +17,9 @@ okhttp = "4.12.0"
 retrofit = "2.9.0"
 timber = "5.0.1"
 moshi = "2.4.0"
+moshi-kotlin = "1.15.0"
+webserver = "4.9.3"
+mockk = "1.13.9"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -38,12 +41,17 @@ material = { group = "com.google.android.material", name = "material", version.r
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-version" }
-room-compiler = { group = "androidx.room", name = "room:room-compiler", version.ref = "room-version" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-version" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-version" }
+room-test = { group = "androidx.room", name = "room-testing", version.ref = "room-version" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshi" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi-kotlin" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mock-webserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "webserver" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -46,13 +46,19 @@ dependencies {
     annotationProcessor(libs.room.compiler)
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)
+    testImplementation(libs.room.test)
 
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.moshi)
     implementation(libs.okhttp)
+    implementation(libs.moshi.kotlin)
     //Timber
     implementation(libs.timber)
+
+    //Mock
+    testImplementation(libs.mockk)
+    testImplementation(libs.mock.webserver)
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
