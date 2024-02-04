@@ -4,7 +4,7 @@ import com.simpletech.bettrack.base.BaseViewModel
 import com.simpletech.bettrack.feature.home.category_card.CategoryCardContract.CategoryCardEffect
 import com.simpletech.bettrack.feature.home.category_card.CategoryCardContract.CategoryCardEvent
 import com.simpletech.bettrack.feature.home.category_card.CategoryCardContract.CategoryCardState
-import com.simpletech.domain.models.SportCategory
+import com.simpletech.domain.models.SportEventsDomainModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,16 +15,36 @@ class CategoryViewModel @Inject constructor(
 ) {
     override fun handleEvent(event: CategoryCardEvent) {
         when (event) {
-            is CategoryCardEvent.OnToggleCategorySaved -> onSaveChanged(event.category)
             CategoryCardEvent.OnExpandCategoryToggle -> onExpandToggle()
-            else -> {}
+            is CategoryCardEvent.OnReceivedData -> onReceivedData(event.data)
+            is CategoryCardEvent.OnSaveEvent -> onSaveEvent(event.eventId)
+            CategoryCardEvent.OnToggleShowOnlySaved -> onFilterOnlyFavourite()
         }
     }
 
-    private fun onSaveChanged(category: SportCategory) {
+
+    private fun onReceivedData(data: SportEventsDomainModel) {
         setState {
             copy(
-                isFavourite = !this.isFavourite
+                data = data
+            )
+        }
+    }
+
+    private fun onSaveEvent(id: String) {
+        val events = currentState.savedEvents.toMutableSet()
+        events.add(id)
+        setState {
+            copy(
+                savedEvents = events.toList()
+            )
+        }
+    }
+
+    private fun onFilterOnlyFavourite() {
+        setState {
+            copy(
+                showOnlyFavourite = !this.showOnlyFavourite
             )
         }
     }

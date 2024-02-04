@@ -7,11 +7,14 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 
 fun Date.getCountDownFlow(): Flow<String> = flow {
-    val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    val sdf = SimpleDateFormat("dd'd' HH:mm:ss", Locale.getDefault())
+    sdf.timeZone = TimeZone.getTimeZone("UTC")
     val targetCalendar = Calendar.getInstance()
+    targetCalendar.timeZone = TimeZone.getTimeZone("UTC")
     targetCalendar.time = this@getCountDownFlow
     val targetMillis = targetCalendar.timeInMillis
     val timeDifference = targetMillis.minus(System.currentTimeMillis())

@@ -29,7 +29,7 @@ class HomeScreenViewModel @Inject constructor(
                     Timber.tag(TAG).i("Got data! Count: ${response.data.sports.size}")
                     setState {
                         copy(
-                            data = response.data,
+                            data = response.data.sports,
                             isLoading = false
                         )
                     }

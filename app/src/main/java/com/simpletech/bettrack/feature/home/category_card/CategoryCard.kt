@@ -26,6 +26,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +53,10 @@ fun CategoryCard(
         targetValue = if (state.isExpanded) -180f else 0f,
         label = ""
     )
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.onEvent(CategoryCardContract.CategoryCardEvent.OnReceivedData(data))
+    })
 
     Column(
         modifier = Modifier
@@ -81,7 +86,7 @@ fun CategoryCard(
                         )
                 )
                 Text(
-                    data.title,
+                    state.data?.title.orEmpty(),
                     style = MaterialTheme.typography.titleSmall
                 )
             }
@@ -92,12 +97,10 @@ fun CategoryCard(
             ) {
                 CustomSwitch(
                     icon = Icons.Filled.Star,
-                    isEnabled = state.isFavourite
+                    isEnabled = state.showOnlyFavourite
                 ) {
                     viewModel.onEvent(
-                        CategoryCardContract.CategoryCardEvent.OnToggleCategorySaved(
-                            data.category
-                        )
+                        CategoryCardContract.CategoryCardEvent.OnToggleShowOnlySaved
                     )
                 }
 
@@ -118,7 +121,7 @@ fun CategoryCard(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-            EventGrid(events = data.activeEvents)
+            EventGrid(events = state.mappedSavedEvents, onEvent = viewModel::onEvent)
         }
     }
 }
@@ -126,7 +129,8 @@ fun CategoryCard(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EventGrid(
-    events: List<EventDomainModel>
+    events: List<Pair<EventDomainModel, Boolean>>,
+    onEvent: (CategoryCardContract.CategoryCardEvent) -> Unit
 ) {
     FlowRow(
         modifier = Modifier
@@ -135,8 +139,8 @@ fun EventGrid(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        events.forEach {
-            EventCard(data = it)
+        events.forEach { (event, isSaved) ->
+            EventCard(data = event, isSaved, onEvent)
         }
     }
 }
