@@ -17,7 +17,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.simpletech.bettrack.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -62,12 +62,21 @@ dependencies {
     ksp(libs.hiltCompiler)
     ksp(libs.hiltAndroidCompiler)
     ksp(libs.daggerCompiler)
+    //Hilt Test
+    testImplementation(libs.hilt.test)
+    androidTestImplementation(libs.hilt.test)
+    kspAndroidTest(libs.hilt.test.compiler)
+    kspTest(libs.hilt.test.compiler)
 
     //Timber
     implementation(libs.timber)
 
     //Lifecycle
     implementation(libs.lifecycle.viewmodel)
+
+    //Compose Test
+    androidTestImplementation(libs.compose.test)
+    debugImplementation(libs.compose.test.manifest)
 
     implementation(libs.lifecycle.compose)
     implementation(libs.core.ktx)

@@ -21,11 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.simpletech.bettrack.feature.home.category_card.CategoryCardContract
+import com.simpletech.bettrack.tools.TestTags
 import com.simpletech.bettrack.tools.getCountDownFlow
 import com.simpletech.bettrack.ui.theme.AppColors
 import com.simpletech.domain.models.EventDomainModel
@@ -56,6 +58,10 @@ fun EventCard(
 
     Column(
         modifier = Modifier
+            .run {
+                if (isSaved) testTag(TestTags.EventCardIsSaved)
+                else testTag(TestTags.EventCard)
+            }
             .height(120.dp)
             .width(100.dp)
             .clickable {
@@ -70,7 +76,9 @@ fun EventCard(
             color = Color.White
         )
         Icon(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier
+                .testTag(TestTags.EventCardSave + data.id)
+                .size(20.dp),
             imageVector = Icons.Filled.Star,
             contentDescription = "",
             tint = starColor.value

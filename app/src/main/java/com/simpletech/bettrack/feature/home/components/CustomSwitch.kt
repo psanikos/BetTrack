@@ -19,13 +19,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.simpletech.bettrack.tools.TestTags
 import com.simpletech.bettrack.ui.theme.AppColors
 import com.simpletech.bettrack.ui.theme.BetTrackTheme
 
 @Composable
 fun CustomSwitch(
+    modifier: Modifier = Modifier,
     icon: ImageVector,
     isEnabled: Boolean,
     onTap: () -> Unit
@@ -46,7 +49,7 @@ fun CustomSwitch(
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .width(50.dp)
             .height(28.dp),
         contentAlignment = Alignment.Center

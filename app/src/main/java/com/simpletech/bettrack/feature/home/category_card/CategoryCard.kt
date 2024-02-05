@@ -32,11 +32,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.simpletech.bettrack.feature.home.components.CustomSwitch
 import com.simpletech.bettrack.feature.home.event.EventCard
+import com.simpletech.bettrack.tools.TestTags
 import com.simpletech.bettrack.ui.theme.AppColors
 import com.simpletech.domain.models.EventDomainModel
 import com.simpletech.domain.models.SportEventsDomainModel
@@ -60,6 +62,7 @@ fun CategoryCard(
 
     Column(
         modifier = Modifier
+            .testTag(TestTags.CategoryCard)
             .fillMaxWidth()
             .wrapContentHeight()
             .animateContentSize()
@@ -96,6 +99,7 @@ fun CategoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CustomSwitch(
+                    modifier = Modifier.testTag(TestTags.FilterOnlySaved + data.title),
                     icon = Icons.Filled.Star,
                     isEnabled = state.showOnlyFavourite
                 ) {
@@ -104,9 +108,11 @@ fun CategoryCard(
                     )
                 }
 
-                IconButton(onClick = {
-                    viewModel.onEvent(CategoryCardContract.CategoryCardEvent.OnExpandCategoryToggle)
-                }) {
+                IconButton(
+                    modifier = Modifier.testTag(TestTags.ExpandEvents + data.title),
+                    onClick = {
+                        viewModel.onEvent(CategoryCardContract.CategoryCardEvent.OnExpandCategoryToggle)
+                    }) {
                     Icon(
                         Icons.Filled.KeyboardArrowDown,
                         contentDescription = "",
@@ -134,6 +140,7 @@ fun EventGrid(
 ) {
     FlowRow(
         modifier = Modifier
+            .testTag(TestTags.EventGrid)
             .padding(16.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,

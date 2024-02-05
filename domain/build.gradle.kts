@@ -41,10 +41,6 @@ dependencies {
     ksp(libs.hiltCompiler)
     ksp(libs.hiltAndroidCompiler)
 
-    //Mock
-    testImplementation(libs.mockk)
-    testImplementation(libs.mock.webserver)
-
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

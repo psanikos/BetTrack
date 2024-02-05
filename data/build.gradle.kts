@@ -42,13 +42,6 @@ dependencies {
     ksp(libs.hiltCompiler)
     ksp(libs.hiltAndroidCompiler)
 
-    //Room
-    implementation(libs.room.runtime)
-    annotationProcessor(libs.room.compiler)
-    ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
-    testImplementation(libs.room.test)
-
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.moshi)
