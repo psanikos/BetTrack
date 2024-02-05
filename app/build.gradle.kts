@@ -62,12 +62,15 @@ dependencies {
     ksp(libs.hiltCompiler)
     ksp(libs.hiltAndroidCompiler)
     ksp(libs.daggerCompiler)
+
     //Hilt Test
     testImplementation(libs.hilt.test)
     androidTestImplementation(libs.hilt.test)
     kspAndroidTest(libs.hilt.test.compiler)
     kspTest(libs.hilt.test.compiler)
 
+    implementation(libs.moshi)
+    implementation(libs.datastore)
     //Timber
     implementation(libs.timber)
 
@@ -77,6 +80,7 @@ dependencies {
     //Compose Test
     androidTestImplementation(libs.compose.test)
     debugImplementation(libs.compose.test.manifest)
+
 
     implementation(libs.lifecycle.compose)
     implementation(libs.core.ktx)

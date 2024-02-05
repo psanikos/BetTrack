@@ -27,7 +27,7 @@ lifecycle-compose = "2.7.0"
 navigation = "2.7.6"
 hilt-navigation = "1.1.0"
 material3 = "1.2.0-rc01"
-robolectric = "4.11.1"
+datastore = "1.0.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -56,7 +56,6 @@ hiltAndroidCompiler = { group = "com.google.dagger", name = "hilt-android-compil
 daggerCompiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "hilt" }
 hilt-test = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-test-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
-roboletric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
@@ -68,6 +67,7 @@ mock-webserver = { group = "com.squareup.okhttp3", name = "mockwebserver", versi
 navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 compose-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-version" }
 compose-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose-version" }
+datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

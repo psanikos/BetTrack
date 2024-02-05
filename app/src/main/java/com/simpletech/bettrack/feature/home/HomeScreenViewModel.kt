@@ -16,7 +16,6 @@ class HomeScreenViewModel @Inject constructor(
 ) : BaseViewModel<HomeScreenContract.HomeState, HomeScreenContract.HomeEvent, HomeScreenContract.HomeEffect>(
     HomeScreenContract.HomeState()
 ) {
-
     init {
         fetchEvents()
     }
@@ -52,6 +51,6 @@ class HomeScreenViewModel @Inject constructor(
 
 
     companion object {
-        val TAG = "HOMEVM"
+        const val TAG = "HOMEVM"
     }
 }
