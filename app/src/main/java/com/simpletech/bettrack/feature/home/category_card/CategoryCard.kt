@@ -33,14 +33,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.simpletech.bettrack.feature.home.components.CustomSwitch
+import com.simpletech.bettrack.feature.home.components.EventGrid
 import com.simpletech.bettrack.feature.home.event.EventCard
 import com.simpletech.bettrack.tools.TestTags
 import com.simpletech.bettrack.ui.theme.AppColors
+import com.simpletech.bettrack.ui.theme.BetTrackTheme
 import com.simpletech.domain.models.EventDomainModel
+import com.simpletech.domain.models.SportCategory
 import com.simpletech.domain.models.SportEventsDomainModel
 
 
@@ -51,15 +55,24 @@ fun CategoryCard(
     val viewModel: CategoryViewModel = hiltViewModel(key = data.category.code)
     val state by viewModel.state().collectAsStateWithLifecycle()
 
-    val rotation by animateFloatAsState(
-        targetValue = if (state.isExpanded) -180f else 0f,
-        label = ""
-    )
-
     LaunchedEffect(key1 = Unit, block = {
         viewModel.onEvent(CategoryCardContract.CategoryCardEvent.OnReceivedData(data))
     })
 
+    Content(data.title, state = state, onEvent = viewModel::onEvent)
+}
+
+@Composable
+private fun Content(
+    title: String,
+    state:  CategoryCardContract.CategoryCardState,
+    onEvent: (CategoryCardContract.CategoryCardEvent) -> Unit
+) {
+
+    val rotation by animateFloatAsState(
+        targetValue = if (state.isExpanded) -180f else 0f,
+        label = ""
+    )
     Column(
         modifier = Modifier
             .testTag(TestTags.CategoryCard)
@@ -89,7 +102,7 @@ fun CategoryCard(
                         )
                 )
                 Text(
-                    state.data?.title.orEmpty(),
+                    title,
                     style = MaterialTheme.typography.titleSmall
                 )
             }
@@ -99,19 +112,19 @@ fun CategoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CustomSwitch(
-                    modifier = Modifier.testTag(TestTags.FilterOnlySaved + data.title),
+                    modifier = Modifier.testTag(TestTags.FilterOnlySaved + title),
                     icon = Icons.Filled.Star,
                     isEnabled = state.showOnlyFavourite
                 ) {
-                    viewModel.onEvent(
+                    onEvent(
                         CategoryCardContract.CategoryCardEvent.OnToggleShowOnlySaved
                     )
                 }
 
                 IconButton(
-                    modifier = Modifier.testTag(TestTags.ExpandEvents + data.title),
+                    modifier = Modifier.testTag(TestTags.ExpandEvents + title),
                     onClick = {
-                        viewModel.onEvent(CategoryCardContract.CategoryCardEvent.OnExpandCategoryToggle)
+                        onEvent(CategoryCardContract.CategoryCardEvent.OnExpandCategoryToggle)
                     }) {
                     Icon(
                         Icons.Filled.KeyboardArrowDown,
@@ -127,27 +140,20 @@ fun CategoryCard(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-            EventGrid(events = state.mappedSavedEvents, onEvent = viewModel::onEvent)
+            EventGrid(events = state.mappedSavedEvents, onEvent = onEvent)
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+
+@Preview
 @Composable
-fun EventGrid(
-    events: List<Pair<EventDomainModel, Boolean>>,
-    onEvent: (CategoryCardContract.CategoryCardEvent) -> Unit
-) {
-    FlowRow(
-        modifier = Modifier
-            .testTag(TestTags.EventGrid)
-            .padding(16.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        events.forEach { (event, isSaved) ->
-            EventCard(data = event, isSaved, onEvent)
-        }
+fun CategoryCardPreview() {
+    BetTrackTheme {
+        Content(
+            title = "Football",
+            state = CategoryCardContract.CategoryCardState(),
+            onEvent = {}
+        )
     }
 }

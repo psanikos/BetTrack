@@ -93,10 +93,9 @@ fun CustomSwitchPreview() {
     BetTrackTheme {
         CustomSwitch(
             icon = Icons.Filled.Star,
-            isEnabled = true
-        ) {
-
-        }
+            isEnabled = true,
+            onTap = {}
+        )
     }
 }
 
@@ -106,9 +105,8 @@ fun CustomSwitchDisabledPreview() {
     BetTrackTheme {
         CustomSwitch(
             icon = Icons.Filled.Star,
-            isEnabled = false
-        ) {
-
-        }
+            isEnabled = false,
+            onTap = {}
+        )
     }
 }

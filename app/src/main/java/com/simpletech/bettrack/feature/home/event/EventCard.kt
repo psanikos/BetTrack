@@ -25,11 +25,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.simpletech.bettrack.feature.home.category_card.CategoryCardContract
 import com.simpletech.bettrack.tools.TestTags
 import com.simpletech.bettrack.tools.getCountDownFlow
 import com.simpletech.bettrack.ui.theme.AppColors
+import com.simpletech.bettrack.ui.theme.BetTrackTheme
 import com.simpletech.domain.models.EventDomainModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -106,4 +108,16 @@ fun EventCard(
         )
     }
 
+}
+
+@Preview
+@Composable
+fun EventCardPreview() {
+    BetTrackTheme {
+        EventCard(
+            data = CategoryCardContract.CategoryCardState.mockDomainModel,
+            isSaved = false,
+            onEvent = {}
+        )
+    }
 }

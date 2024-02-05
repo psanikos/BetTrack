@@ -8,8 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.simpletech.bettrack.ui.theme.AppColors
+import com.simpletech.bettrack.ui.theme.BetTrackTheme
 
 @Composable
 fun LoadingIndicator() {
@@ -22,5 +24,13 @@ fun LoadingIndicator() {
             color = AppColors.Blue,
             trackColor = Color.White
         )
+    }
+}
+
+@Preview
+@Composable
+fun LoadingIndicatorPreview() {
+    BetTrackTheme {
+        LoadingIndicator()
     }
 }
